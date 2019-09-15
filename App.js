@@ -3,6 +3,10 @@ import { StyleSheet, Text, View, Button, AsyncStorage, ActivityIndicator, Status
 import {createSwitchNavigator, createAppContainer } from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from './config.json';
+import * as Font from 'expo-font';
+const Icon = createIconSetFromFontello(fontelloConfig);
 import t from 'tcomb-form-native';
 
 const Form  = t.form.Form;
@@ -58,6 +62,14 @@ class SignInScreen extends Component {
     const value = this._form.getValue();
     console.log('value: ', value);
     this.props.navigation.navigate('App')
+  }
+
+  componentDidMount() {
+    Font.loadAsync({
+      'fontello': require('./resources/fonts/fontello.ttf'),
+      'Raleway': require('./resources/fonts/Raleway-Bold.ttf')
+    });
+    this.setState({ fontLoaded: true });
   }
   
   render() {
@@ -143,14 +155,21 @@ const styles = StyleSheet.create({
 
 const getTabBarIcon = (navigation, focused, tintColor) => {
   const { routeName } = navigation.state;
-  if (routeName === 'Home') {
-    iconName = <Image source={require('./assets/pokeball_PNG30@3x.jpg')}/>;
+  let IconComponent = Icon;
+  let iconName;
+  if (routeName === 'Shop') {
+    iconName = `shopping-cart-black-shape`;
   } else if (routeName === 'Settings') {
-    iconName = <Image source={require('./assets/SettingsIcon.svg')}/>;
-  }
+    iconName = `settingsicon`;
+  } else if (routeName === 'Goals') {
+    iconName = `union-1`;
+  } else if (routeName === 'Profile') {
+    iconName = 'man-user';
+  } 
+ 
 
   // You can return any component that you like here!
-  // return <IconComponent name={iconName} size={25} color={tintColor} />;
+  return <IconComponent name={iconName} size={25} color={tintColor} />;
 };
 
 
@@ -158,11 +177,11 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
 
 
 const AppStack = createBottomTabNavigator({
+  Profile: {screen: ProfileScreen},
+  Goals: {screen: GoalsScreen},
   Home: {screen: HomeScreen},
   Shop: {screen: ShopScreen},
-  Settings: {screen: SettingsScreen},
-  Goals: {screen: GoalsScreen},
-  Profile: {screen: ProfileScreen}
+  Settings: {screen: SettingsScreen}
 },
 {
   defaultNavigationOptions: ({ navigation }) => ({
@@ -170,8 +189,19 @@ const AppStack = createBottomTabNavigator({
       getTabBarIcon(navigation, focused, tintColor),
   }),
   tabBarOptions: {
-    activeTintColor: 'b2b2b2',
-    inactiveTintColor: 'steel',
+    activeTintColor: '#b2b2b2',
+    inactiveTintColor: '#8e8e93',
+    labelStyle: {
+      fontFamily: "Raleway",
+      textAlign: "center",
+      lineHeight: 22,
+      fontSize: 10
+    },
+    style: {
+      backgroundColor: '#F9F9F9',
+      width: 360,
+      height: 62.3
+    },
   },
 }
 );

@@ -1,6 +1,10 @@
 {
   "main": "node_modules/expo/AppEntry.js",
-  "rnpm": { "assets": [ "resources/fonts" ] },
+  "rnpm": {
+    "assets": [
+      "resources/fonts"
+    ]
+  },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -22,6 +26,9 @@
     "react-navigation-stack": "^1.7.3",
     "react-navigation-tabs": "^2.5.2",
     "react-router": "^5.0.1",
+    "request": "^2.88.0",
+    "request-debug": "^0.2.0",
+    "request-promise-native": "^1.0.7",
     "tcomb-form-native": "^0.6.20"
   },
   "devDependencies": {

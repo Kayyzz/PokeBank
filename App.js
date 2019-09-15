@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, AsyncStorage, ActivityIndicator, StatusBar} from 'react-native';
+import { StyleSheet, Text, View, Button, AsyncStorage, ActivityIndicator, StatusBar, Image} from 'react-native';
 import {createSwitchNavigator, createAppContainer } from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
@@ -8,6 +8,40 @@ import fontelloConfig from './config.json';
 import * as Font from 'expo-font';
 const Icon = createIconSetFromFontello(fontelloConfig);
 import t from 'tcomb-form-native';
+
+const initialCustomerId = "d7b518ac-b11d-4e18-9ace-6c24342a7c6b";
+
+
+
+
+
+var savings = 0;
+
+
+var myInit = {
+  method: 'GET',
+  headers: {
+    'Authorization': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJDQlAiLCJ0ZWFtX2lkIjoiMzY4MTI0ODItZDgxNy0zNDQ1LThkYzYtNDhlYWRiYjJmOGYxIiwiZXhwIjo5MjIzMzcyMDM2ODU0Nzc1LCJhcHBfaWQiOiJmMDYwN2I0NC1jYWY5LTRlNGEtOTU3NS03ODc3MjllOWRkMjUifQ.z15cdCC5QVj7JvaJKGPAaAjAmviLUjv7fKUVjlYy6OI"
+  }
+};
+
+var myRequest = new Request('https://api.td-davinci.com/api/customers/d7b518ac-b11d-4e18-9ace-6c24342a7c6b/accounts', myInit);
+
+var fetchNow = function(){
+  fetch(myRequest)
+  .then(response => response.json())
+  .then(json => {
+    // the json variable contains the response from the API
+    savings = json.result.bankAccounts[1].balance;
+  });
+  return savings;
+}
+
+
+
+
+
+
 
 const Form  = t.form.Form;
 
@@ -89,11 +123,33 @@ class SignInScreen extends Component {
   }
 }
 
+
+
 class HomeScreen extends Component {
+  constructor(){
+    super()
+    this.state = {
+      myText: 'Savings $' + savings
+    }
+  }
+  updateText = () => {
+    savings = fetchNow();
+    this.setState({myText: 'Savings $' + savings});
+  }
+
+
   render() {
     return (
       <View>
-        <Text>HOME PAGE</Text>
+        <Image
+          style={styles.grass}
+          source={require('./assets/Asset-1.png')}
+        />
+       <Image
+          style={styles.logo}
+          source={require('./assets/PokeBank-Logo2.jpg')}
+        />
+        <Text onPress = {this.updateText} style= {styles.SavingsDisplay}>{this.state.myText}</Text>      
       </View>
     );
   }
@@ -103,8 +159,11 @@ class ShopScreen extends Component{
   render() {
     return (
       <View>
-        <Text>SHOP PAGE</Text>
-      </View>
+        <Image
+          style={styles.logo}
+          source={require('./assets/PokeBank-Logo2.jpg')}
+        />    
+      </View>   
     );
   }
 }
@@ -113,7 +172,10 @@ class SettingsScreen extends Component{
   render() {
     return (
       <View>
-        <Text>Settings PAGE</Text>
+        <Image
+          style={styles.logo}
+          source={require('./assets/PokeBank-Logo2.jpg')}
+        />    
       </View>
     );
   }
@@ -123,7 +185,10 @@ class GoalsScreen extends Component{
   render() {
     return (
       <View>
-        <Text>Goals PAGE</Text>
+        <Image
+          style={styles.logo}
+          source={require('./assets/PokeBank-Logo2.jpg')}
+        />    
       </View>
     );
   }
@@ -133,8 +198,12 @@ class ProfileScreen extends Component{
   render() {
     return (
       <View>
-        <Text>Profile PAGE</Text>
+        <Image
+          style={styles.logo}
+          source={require('./assets/PokeBank-Logo2.jpg')}
+        />    
       </View>
+
     );
   }
 }
@@ -151,6 +220,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  grass: {
+    width: 360,
+    height: 299.6,
+    position: 'relative', 
+    top: 330
+  },
+
+  logo: {
+    width: 122,
+    height: 47,
+    position: 'absolute',
+    top: 20
+
+  },
+  SavingsDisplay: {
+    width: 122,
+    height: 100,
+    position: 'absolute',
+    top: 50,
+    left: 215,
+    fontFamily: "Raleway",
+    fontSize: 18
+  }
+
 });
 
 const getTabBarIcon = (navigation, focused, tintColor) => {
@@ -165,7 +259,9 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
     iconName = `union-1`;
   } else if (routeName === 'Profile') {
     iconName = 'man-user';
-  } 
+  } else if (routeName === 'Home'){
+    iconName = 'pokeball';
+  }
  
 
   // You can return any component that you like here!

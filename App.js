@@ -156,6 +156,28 @@ var cheap_dict = {
 }
 var cheap_dict_keys = Object.keys(cheap_dict);
 
+
+var cheap_dict = {
+  "Bulbasaur": ["https://img.pokemondb.net/sprites/black-white/anim/normal/bulbasaur.gif", false],
+  "Charmander": ["https://img.pokemondb.net/sprites/black-white/anim/normal/charmander.gif", false],
+  "Squirtle": ["https://img.pokemondb.net/sprites/black-white/anim/normal/squirtle.gif", false],
+  "Pikachu": ["https://img.pokemondb.net/sprites/black-white/anim/normal/pikachu-f.gif", false],
+  "Dratini": ["https://img.pokemondb.net/sprites/black-white/anim/normal/dratini.gif", false],
+  "Eevee": ["https://img.pokemondb.net/sprites/black-white/anim/normal/eevee.gif", false],
+  "Electabuzz": ["http://www.pokestadium.com/sprites/xy/electabuzz.gif", false],
+  "Magmar": ["http://www.pokestadium.com/sprites/xy/magmar.gif", false],
+  "Scyther": ["http://www.pokestadium.com/sprites/xy/scyther.gif", false],
+  "Pinsir": ["http://www.pokestadium.com/sprites/xy/pinsir.gif", false],
+  "Lapras": ["https://img.pokemondb.net/sprites/black-white/anim/normal/lapras.gif", false],
+  "Venusaur": ["http://www.pokestadium.com/sprites/xy/venusaur-female.gif", false],
+  "Charizard": ["http://www.pokestadium.com/sprites/xy/charizard.gif", false],
+  "Blastoise": ["http://www.pokestadium.com/sprites/xy/blastoise.gif", false],
+  "Dragonite": ["http://www.pokestadium.com/sprites/xy/dragonite.gif", false],
+  "Snorlax": ["http://www.pokestadium.com/sprites/xy/snorlax.gif", false]
+}
+  
+var cheap_dict_keys = Object.keys(cheap_dict);
+
 class ShopScreen extends React.Component{
   render() {
     savings -= 1005;

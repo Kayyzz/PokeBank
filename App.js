@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, AsyncStorage, ActivityIndicator, StatusBar, Image} from 'react-native';
+import { StyleSheet, Text, View, Button, Image, AsyncStorage, ActivityIndicator, StatusBar} from 'react-native';
 import {createSwitchNavigator, createAppContainer } from 'react-navigation';
 import config from './config/config'
 import Loading from './pages/Loading'
@@ -95,53 +95,86 @@ class HomeScreen extends Component{
           style={styles.logo}
           source={require('./assets/PokeBank-Logo2.jpg')}
         />
-        <Text onPress = {this.updateText} style= {styles.SavingsDisplay}>{this.state.myText}</Text>      
+        <Text onPress = {this.updateText} style= {styles.SavingsDisplay}>{this.state.myText}</Text>
+        <Image style={{width:100, height:100, alignSelf: 'center', position: 'absolute', top: 300}}
+         source={{uri: cheap_dict[cheap_dict_keys[5]][0]}}/>  
+        <Image style={{width:100, height:100, position: 'absolute', top: 460,right: 200}}
+         source={{uri: cheap_dict[cheap_dict_keys[0]][0]}}/>     
       </View>
     )
   }
 }
 
-class ShopScreen extends React.Component{
-  render() {
-    return (
-      <View>
-        <Image
-          style={styles.logo}
-          source={require('./assets/PokeBank-Logo2.jpg')}
-        />    
-      </View>   
-    );
-  }
-}
+
+
 
 class SettingsScreen extends React.Component{
-  // state = { currentUser: null }
-  // componentDidMount() {
-  //   const { currentUser } = firebase.auth();
-  //   this.setState( {currentUser} );
-  // }
+  state = { currentUser: null }
+  componentDidMount() {
+    const { currentUser } = firebase.auth();
+    this.setState( {currentUser} );
+  }
 
-  // handleLogout = () => {
-  //   firebase.auth()
-  //           .signOut()
-  //           .then(() => {
-  //                 this.setState = { currentUser: null };
-  //                 this.props.navigation.navigate('Login')})
-  //           .catch(error => this.setState({ errorMessage: error.message })) }
+  handleLogout = () => {
+    firebase.auth()
+            .signOut()
+            .then(() => {
+                  this.setState = { currentUser: null };
+                  this.props.navigation.navigate('Login')})
+            .catch(error => this.setState({ errorMessage: error.message })) }
+
   render() {
-    // const { currentUser } = this.state;
+    const { currentUser } = this.state;
     return (
       <View>
-        {/* <Text style = {styles.LogoutButton}> Hi {currentUser && currentUser.email}! </Text>
-        <Button title='Log out' onPress={this.handleLogout} /> */}
         <Image
           style={styles.logo}
-          source={require('./assets/PokeBank-Logo2.jpg')}
-        />    
+          source={require('./assets/PokeBank-Logo2.jpg')}/>
+        <Text style = {styles.LogoutButton}> Hi {currentUser && currentUser.email}! </Text>
+        <Button title='Log out' onPress={this.handleLogout} />
       </View>
     );
   }
 }
+var cheap_dict = {
+  "Bulbasaur": ["https://img.pokemondb.net/sprites/black-white/anim/normal/bulbasaur.gif", false],
+  "Charmander": ["https://img.pokemondb.net/sprites/black-white/anim/normal/charmander.gif", false],
+  "Squirtle": ["https://img.pokemondb.net/sprites/black-white/anim/normal/squirtle.gif", false],
+  "Pikachu": ["https://img.pokemondb.net/sprites/black-white/anim/normal/pikachu-f.gif", false],
+  "Dratini": ["https://img.pokemondb.net/sprites/black-white/anim/normal/dratini.gif", false],
+  "Eevee": ["https://img.pokemondb.net/sprites/black-white/anim/normal/eevee.gif", false],
+  "Electabuzz": ["http://www.pokestadium.com/sprites/xy/electabuzz.gif", false],
+  "Magmar": ["http://www.pokestadium.com/sprites/xy/magmar.gif", false],
+  "Scyther": ["http://www.pokestadium.com/sprites/xy/scyther.gif", false],
+  "Pinsir": ["http://www.pokestadium.com/sprites/xy/pinsir.gif", false],
+  "Lapras": ["https://img.pokemondb.net/sprites/black-white/anim/normal/lapras.gif", false],
+  "Venusaur": ["http://www.pokestadium.com/sprites/xy/venusaur-female.gif", false],
+  "Charizard": ["http://www.pokestadium.com/sprites/xy/charizard.gif", false],
+  "Blastoise": ["http://www.pokestadium.com/sprites/xy/blastoise.gif", false],
+  "Dragonite": ["http://www.pokestadium.com/sprites/xy/dragonite.gif", false],
+  "Snorlax": ["http://www.pokestadium.com/sprites/xy/snorlax.gif", false]
+}
+var cheap_dict_keys = Object.keys(cheap_dict);
+
+class ShopScreen extends React.Component{
+  render() {
+    savings -= 1005;
+  
+    return (
+      <View style={{top: 170, flex: 0.5, justifyContent: 'center', flexDirection: 'column'}}>
+        <Text style={{alignSelf: 'center'}}> You obtained </Text>
+        <Image
+          style={styles.logo}
+          source={require('./assets/PokeBank-Logo2.jpg')}
+        />    
+        <Image style={{width:100, height:100, alignSelf: 'center'}}
+         source={{uri: cheap_dict[cheap_dict_keys[14]][0]}}/>
+        <Text style={{alignSelf: 'center'}}> $1005 </Text>
+      </View>
+    );
+  }
+}
+
 
 class GoalsScreen extends React.Component{
   render() {
@@ -156,16 +189,28 @@ class GoalsScreen extends React.Component{
   }
 }
 
-class ProfileScreen extends React.Component{
+class ProfileScreen extends Component{
   render() {
     return (
-      <View>
-        <Image
+      <View style={{justifyContent: 'center', top: 200, flexDirection: 'column'}}>
+      <Image
           style={styles.logo}
           source={require('./assets/PokeBank-Logo2.jpg')}
-        />    
+        />
+        <Text style={{alignSelf: 'center'}}> Your current Inventory </Text>
+        <Image 
+          style = {{width: 70, height: 70, alignSelf: 'center'}}
+          source={{uri: cheap_dict["Bulbasaur"][0]}}/>
+        <Image
+          style = {{width: 95, height: 95, alignSelf: 'center'}}
+          source={{uri: cheap_dict["Scyther"][0]}}/>
+        <Image
+          style = {{width: 100, height: 110, alignSelf: 'center'}}
+          source={{uri: cheap_dict["Dragonite"][0]}}/>
+        <Image
+          style = {{width: 80, height: 80, alignSelf: 'center'}}
+          source={{uri: cheap_dict["Eevee"][0]}}/>
       </View>
-
     );
   }
 }

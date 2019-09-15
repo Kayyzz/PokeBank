@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, AsyncStorage, ActivityIndicator, StatusBar} from 'react-native';
+import {createSwitchNavigator, createAppContainer } from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
 import t from 'tcomb-form-native';
 
 const Form  = t.form.Form;
@@ -50,10 +53,11 @@ const options = {
   stylesheet: formStyles,
 };
 
-export default class App extends Component {
+class SignInScreen extends Component {
   handleSubmit = () => {
     const value = this._form.getValue();
     console.log('value: ', value);
+    this.props.navigation.navigate('App')
   }
   
   render() {
@@ -73,6 +77,61 @@ export default class App extends Component {
   }
 }
 
+class HomeScreen extends Component {
+  render() {
+    return (
+      <View>
+        <Text>HOME PAGE</Text>
+      </View>
+    );
+  }
+}
+
+class ShopScreen extends Component{
+  render() {
+    return (
+      <View>
+        <Text>SHOP PAGE</Text>
+      </View>
+    );
+  }
+}
+
+class SettingsScreen extends Component{
+  render() {
+    return (
+      <View>
+        <Text>Settings PAGE</Text>
+      </View>
+    );
+  }
+}
+
+class GoalsScreen extends Component{
+  render() {
+    return (
+      <View>
+        <Text>Goals PAGE</Text>
+      </View>
+    );
+  }
+}
+
+class ProfileScreen extends Component{
+  render() {
+    return (
+      <View>
+        <Text>Profile PAGE</Text>
+      </View>
+    );
+  }
+}
+
+
+
+
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -81,3 +140,51 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+const getTabBarIcon = (navigation, focused, tintColor) => {
+  const { routeName } = navigation.state;
+  if (routeName === 'Home') {
+    iconName = <Image source={require('./assets/pokeball_PNG30@3x.jpg')}/>;
+  } else if (routeName === 'Settings') {
+    iconName = <Image source={require('./assets/SettingsIcon.svg')}/>;
+  }
+
+  // You can return any component that you like here!
+  // return <IconComponent name={iconName} size={25} color={tintColor} />;
+};
+
+
+
+
+
+const AppStack = createBottomTabNavigator({
+  Home: {screen: HomeScreen},
+  Shop: {screen: ShopScreen},
+  Settings: {screen: SettingsScreen},
+  Goals: {screen: GoalsScreen},
+  Profile: {screen: ProfileScreen}
+},
+{
+  defaultNavigationOptions: ({ navigation }) => ({
+    tabBarIcon: ({ focused, tintColor }) =>
+      getTabBarIcon(navigation, focused, tintColor),
+  }),
+  tabBarOptions: {
+    activeTintColor: 'b2b2b2',
+    inactiveTintColor: 'steel',
+  },
+}
+);
+
+
+const AuthStack = createStackNavigator({ SignIn: SignInScreen});
+
+export default createAppContainer(createSwitchNavigator(
+  {
+    Auth: AuthStack,
+    App: AppStack,
+  },
+  {
+    initialRouteName: 'Auth'
+  }
+));

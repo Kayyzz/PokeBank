@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, AsyncStorage, ActivityIndicator, StatusBar, Image} from 'react-native';
+import { StyleSheet, Text, View, Button, Image, AsyncStorage, ActivityIndicator, StatusBar} from 'react-native';
 import {createSwitchNavigator, createAppContainer } from 'react-navigation';
 import config from './config/config'
 import Loading from './pages/Loading'
@@ -116,18 +116,8 @@ class HomeScreen extends Component{
   }
 }
 
-class ShopScreen extends React.Component{
-  render() {
-    return (
-      <View>
-        <Image
-          style={styles.logo}
-          source={require('./assets/PokeBank-Logo2.jpg')}
-        />    
-      </View>   
-    );
-  }
-}
+
+
 
 class SettingsScreen extends React.Component{
   render() {
@@ -135,12 +125,50 @@ class SettingsScreen extends React.Component{
       <View>
         <Image
           style={styles.logo}
-          source={require('./assets/PokeBank-Logo2.jpg')}
-        />    
+          source={require('./assets/PokeBank-Logo2.jpg')}/>
+          </View>
+    );
+  }
+}
+
+class ShopScreen extends React.Component{
+  
+ /* obtained(pokemon_name, pokemon_value) {
+    obtained_dict.push({key:pokemon_name, value:pokemon_value})
+    delete cheap_dict[pokemon_name] */
+  
+  cheap_dict = {
+    "Bulbasaur": ["https://img.pokemondb.net/sprites/black-white/anim/normal/bulbasaur.gif", false],
+    "Charmander": ["https://img.pokemondb.net/sprites/black-white/anim/normal/charmander.gif", false],
+    "Squirtle": ["https://img.pokemondb.net/sprites/black-white/anim/normal/squirtle.gif", false],
+    "Pikachu": ["https://img.pokemondb.net/sprites/black-white/anim/normal/pikachu-f.gif", false],
+    "Dratini": ["https://img.pokemondb.net/sprites/black-white/anim/normal/dratini.gif", false],
+    "Eevee": ["https://img.pokemondb.net/sprites/black-white/anim/normal/eevee.gif", false],
+    "Electabuzz": ["http://www.pokestadium.com/sprites/xy/electabuzz.gif", false],
+    "Magmar": ["http://www.pokestadium.com/sprites/xy/magmar.gif", false],
+    "Scyther": ["http://www.pokestadium.com/sprites/xy/scyther.gif", false],
+    "Pinsir": ["http://www.pokestadium.com/sprites/xy/pinsir.gif", false],
+    "Lapras": ["https://img.pokemondb.net/sprites/black-white/anim/normal/lapras.gif", false],
+    "Venusaur": ["http://www.pokestadium.com/sprites/xy/venusaur-female.gif", false],
+    "Charizard": ["http://www.pokestadium.com/sprites/xy/charizard.gif", false],
+    "Blastoise": ["http://www.pokestadium.com/sprites/xy/blastoise.gif", false],
+    "Dragonite": ["http://www.pokestadium.com/sprites/xy/dragonite.gif", false],
+    "Snorlax": ["http://www.pokestadium.com/sprites/xy/snorlax.gif", false]
+  }
+    
+  cheap_dict_keys = Object.keys(cheap_dict);
+
+  render() {
+    return (
+      <View style={{top: 170, flex: 0.5, justifyContent: 'center', flexDirection: 'column'}}>
+        <Text style={{alignSelf: 'center'}}> You obtained </Text>
+        <Image style={{width:100, height:100, alignSelf: 'center'}}
+         source={{uri: cheap_dict[cheap_dict_keys[14]][0]}}/>
       </View>
     );
   }
 }
+
 
 class GoalsScreen extends React.Component{
   render() {
@@ -155,16 +183,25 @@ class GoalsScreen extends React.Component{
   }
 }
 
-class ProfileScreen extends React.Component{
+class ProfileScreen extends Component{
   render() {
     return (
-      <View>
-        <Image
+      <View style={{justifyContent: 'center', top: 200, flexDirection: 'column'}}>
+      <Image
           style={styles.logo}
           source={require('./assets/PokeBank-Logo2.jpg')}
-        />    
+        />
+        <Text style={{alignSelf: 'center'}}> Your current Inventory </Text>
+        <Image 
+          style = {{width: 70, height: 70, alignSelf: 'center'}}
+          source={{uri: cheap_dict["Bulbasaur"][0]}}/>
+        <Image
+          style = {{width: 95, height: 95, alignSelf: 'center'}}
+          source={{uri: cheap_dict["Scyther"][0]}}/>
+        <Image
+          style = {{width: 100, height: 110, alignSelf: 'center'}}
+          source={{uri: cheap_dict["Dragonite"][0]}}/>
       </View>
-
     );
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, AsyncStorage, ActivityIndicator, StatusBar, Image} from 'react-native';
+import { AppRegistry, TouchableHighlight, Platform, StyleSheet, Text, View, Button, AsyncStorage, ActivityIndicator, StatusBar, Image} from 'react-native';
 import {createSwitchNavigator, createAppContainer } from 'react-navigation';
 import config from './config/config'
 import Loading from './pages/Loading'
@@ -12,6 +12,7 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './config.json';
 import * as firebase from 'firebase';
+
 
 const Icon = createIconSetFromFontello(fontelloConfig);
 
@@ -119,7 +120,7 @@ class HomeScreen extends Component{
 class ShopScreen extends React.Component{
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Image
           style={styles.logo}
           source={require('./assets/PokeBank-Logo2.jpg')}
@@ -143,15 +144,23 @@ class SettingsScreen extends React.Component{
 }
 
 class GoalsScreen extends React.Component{
+  
   render() {
     return (
-      <View>
+      <View style={styles.SavingsDisplay}>
         <Image
-          style={styles.logo}
-          source={require('./assets/PokeBank-Logo2.jpg')}
-        />    
+           style={styles.logo}
+           source={require('./assets/PokeBank-Logo2.jpg')}/>
+        <Text>How much money are you aiming to save this week?</Text>
       </View>
     );
+  }
+
+  componentDidMount() {
+    Font.loadAsync({
+      'fontello': require('./resources/fonts/fontello.ttf'),
+      'Raleway': require('./resources/fonts/Raleway-Bold.ttf')
+    });
   }
 }
 
@@ -164,7 +173,6 @@ class ProfileScreen extends React.Component{
           source={require('./assets/PokeBank-Logo2.jpg')}
         />    
       </View>
-
     );
   }
 }

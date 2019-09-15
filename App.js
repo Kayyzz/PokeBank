@@ -71,19 +71,6 @@ function insertData(num) {
 }
 
 class HomeScreen extends Component{
-  state = { currentUser: null }
-  componentDidMount() {
-    const { currentUser } = firebase.auth();
-    this.setState( {currentUser} );
-  }
-
-  handleLogout = () => {
-    firebase.auth()
-            .signOut()
-            .then(() => {
-                  this.setState = { currentUser: null };
-                  this.props.navigation.navigate('Login')})
-            .catch(error => this.setState({ errorMessage: error.message })) }
 
   constructor(){
     super()
@@ -97,11 +84,9 @@ class HomeScreen extends Component{
   }
 
   render() {
-    const { currentUser } = this.state;
+    
     return (
-      <View style={styles.container}>
-        <Text>Hi {currentUser && currentUser.email}! </Text>
-        <Button title='Log out' onPress={this.handleLogout} />
+      <View>
         <Image
           style={styles.grass}
           source={require('./assets/Asset-1.png')}
@@ -130,9 +115,25 @@ class ShopScreen extends React.Component{
 }
 
 class SettingsScreen extends React.Component{
+  // state = { currentUser: null }
+  // componentDidMount() {
+  //   const { currentUser } = firebase.auth();
+  //   this.setState( {currentUser} );
+  // }
+
+  // handleLogout = () => {
+  //   firebase.auth()
+  //           .signOut()
+  //           .then(() => {
+  //                 this.setState = { currentUser: null };
+  //                 this.props.navigation.navigate('Login')})
+  //           .catch(error => this.setState({ errorMessage: error.message })) }
   render() {
+    // const { currentUser } = this.state;
     return (
       <View>
+        {/* <Text style = {styles.LogoutButton}> Hi {currentUser && currentUser.email}! </Text>
+        <Button title='Log out' onPress={this.handleLogout} /> */}
         <Image
           style={styles.logo}
           source={require('./assets/PokeBank-Logo2.jpg')}
@@ -200,6 +201,7 @@ const styles = StyleSheet.create({
     top: 20
 
   },
+
   SavingsDisplay: {
     width: 122,
     height: 100,
@@ -208,8 +210,14 @@ const styles = StyleSheet.create({
     left: 215,
     fontFamily: "Raleway",
     fontSize: 18
-  }
+  },
 
+  // LogoutButton: {
+  //   width: 100,
+  //   height: 100,
+  //   position: 'absolute',
+  //   top: 300
+  // },
 });
 
 const getTabBarIcon = (navigation, focused, tintColor) => {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, AsyncStorage, ActivityIndicator, StatusBar} from 'react-native';
+import { StyleSheet, Text, View, Button, AsyncStorage, ActivityIndicator, StatusBar, Image} from 'react-native';
 import {createSwitchNavigator, createAppContainer } from 'react-navigation';
 import config from './config/config'
 import Loading from './pages/Loading'
@@ -11,17 +11,42 @@ import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './config.json';
+import * as firebase from 'firebase';
+
 const Icon = createIconSetFromFontello(fontelloConfig);
 
 // import from firebase
 //import from login page
 
-import * as firebase from 'firebase';
 
 // Initialize Firebase
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
 }
+
+const initialCustomerId = "d7b518ac-b11d-4e18-9ace-6c24342a7c6b";
+
+var savings = 0;
+
+var myInit = {
+  method: 'GET',
+  headers: {
+    'Authorization': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJDQlAiLCJ0ZWFtX2lkIjoiMzY4MTI0ODItZDgxNy0zNDQ1LThkYzYtNDhlYWRiYjJmOGYxIiwiZXhwIjo5MjIzMzcyMDM2ODU0Nzc1LCJhcHBfaWQiOiJmMDYwN2I0NC1jYWY5LTRlNGEtOTU3NS03ODc3MjllOWRkMjUifQ.z15cdCC5QVj7JvaJKGPAaAjAmviLUjv7fKUVjlYy6OI"
+  }
+};
+
+var myRequest = new Request('https://api.td-davinci.com/api/customers/d7b518ac-b11d-4e18-9ace-6c24342a7c6b/accounts', myInit);
+
+var fetchNow = function(){
+  fetch(myRequest)
+  .then(response => response.json())
+  .then(json => {
+    // the json variable contains the response from the API
+    savings = json.result.bankAccounts[1].balance;
+  });
+  return savings;
+}
+
 
 // load fonts
 function loadFont() {
@@ -60,12 +85,32 @@ class HomeScreen extends Component{
                   this.props.navigation.navigate('Login')})
             .catch(error => this.setState({ errorMessage: error.message })) }
 
+  constructor(){
+    super()
+    this.state = {
+      myText: 'Savings $' + savings
+    }
+  }
+  updateText = () => {
+    savings = fetchNow();
+    this.setState({myText: 'Savings $' + savings});
+  }
+
   render() {
     const { currentUser } = this.state;
     return (
       <View style={styles.container}>
         <Text>Hi {currentUser && currentUser.email}! </Text>
         <Button title='Log out' onPress={this.handleLogout} />
+        <Image
+          style={styles.grass}
+          source={require('./assets/Asset-1.png')}
+        />
+       <Image
+          style={styles.logo}
+          source={require('./assets/PokeBank-Logo2.jpg')}
+        />
+        <Text onPress = {this.updateText} style= {styles.SavingsDisplay}>{this.state.myText}</Text>      
       </View>
     )
   }
@@ -75,8 +120,11 @@ class ShopScreen extends React.Component{
   render() {
     return (
       <View>
-        <Text>SHOP PAGE</Text>
-      </View>
+        <Image
+          style={styles.logo}
+          source={require('./assets/PokeBank-Logo2.jpg')}
+        />    
+      </View>   
     );
   }
 }
@@ -85,7 +133,10 @@ class SettingsScreen extends React.Component{
   render() {
     return (
       <View>
-        <Text>Settings PAGE</Text>
+        <Image
+          style={styles.logo}
+          source={require('./assets/PokeBank-Logo2.jpg')}
+        />    
       </View>
     );
   }
@@ -95,7 +146,10 @@ class GoalsScreen extends React.Component{
   render() {
     return (
       <View>
-        <Text>Goals PAGE</Text>
+        <Image
+          style={styles.logo}
+          source={require('./assets/PokeBank-Logo2.jpg')}
+        />    
       </View>
     );
   }
@@ -105,8 +159,12 @@ class ProfileScreen extends React.Component{
   render() {
     return (
       <View>
-        <Text>Profile PAGE</Text>
+        <Image
+          style={styles.logo}
+          source={require('./assets/PokeBank-Logo2.jpg')}
+        />    
       </View>
+
     );
   }
 }
@@ -119,6 +177,62 @@ const AppNavigator = createSwitchNavigator(
     Login: Login, 
   }
 );
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  grass: {
+    width: 360,
+    height: 299.6,
+    position: 'relative', 
+    top: 330
+  },
+
+  logo: {
+    width: 122,
+    height: 47,
+    position: 'absolute',
+    top: 20
+
+  },
+  SavingsDisplay: {
+    width: 122,
+    height: 100,
+    position: 'absolute',
+    top: 50,
+    left: 215,
+    fontFamily: "Raleway",
+    fontSize: 18
+  }
+
+});
+
+const getTabBarIcon = (navigation, focused, tintColor) => {
+  const { routeName } = navigation.state;
+  let IconComponent = Icon;
+  let iconName;
+  if (routeName === 'Shop') {
+    iconName = `shopping-cart-black-shape`;
+  } else if (routeName === 'Settings') {
+    iconName = `settingsicon`;
+  } else if (routeName === 'Goals') {
+    iconName = `union-1`;
+  } else if (routeName === 'Profile') {
+    iconName = 'man-user';
+  } else if (routeName === 'Home'){
+    iconName = 'pokeball';
+  }
+ 
+
+  // You can return any component that you like here!
+  return <IconComponent name={iconName} size={25} color={tintColor} />;
+};
+
 
 const AppStack = createBottomTabNavigator({
   Profile: {screen: ProfileScreen},
@@ -163,52 +277,7 @@ const AppContainer = createAppContainer(createSwitchNavigator(
 export default class App extends Component {
     render() {
     return (
-      //<View style={styles.container}>
         <AppContainer />
-        /*
-        <Form 
-          ref={c => this._form = c}
-          type={User} 
-          options={options}
-        />
-        <Button
-          title="Sign Up!"
-          onPress={this.handleSubmit}
-        />
-      */
-      //</View>
     );
   }
 }
-
-
-//const AuthStack = createStackNavigator({ SignIn: SignInScreen});
-
-const getTabBarIcon = (navigation, focused, tintColor) => {
-  const { routeName } = navigation.state;
-  let IconComponent = Icon;
-  let iconName;
-  if (routeName === 'Shop') {
-    iconName = `shopping-cart-black-shape`;
-  } else if (routeName === 'Settings') {
-    iconName = `settingsicon`;
-  } else if (routeName === 'Goals') {
-    iconName = `union-1`;
-  } else if (routeName === 'Profile') {
-    iconName = 'man-user';
-  } 
- 
-
-  // You can return any component that you like here!
-  return <IconComponent name={iconName} size={25} color={tintColor} />;
-};
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
